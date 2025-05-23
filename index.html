@@ -1,11 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Instant Weather V2</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="script.js"></script>
 </head>
+
 <body>
-    
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1>🌤️ Instant Weather V2</h1>
+                <button class="theme-toggle" id="themeToggle" aria-label="Basculer le thème">
+                    <span id="themeIcon">🌙</span>
+                    Mode sombre
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <form class="weather-form" id="weatherForm" aria-label="Formulaire de recherche météo">
+                <div class="form-group">
+                    <label for="cityInput">
+                        🏙️ Nom de la commune
+                    </label>
+                    <input type="text" id="cityInput" placeholder="Ex: Paris, Lyon, Marseille..." required
+                        aria-describedby="cityHelp">
+                    <small id="cityHelp" class="sr-only">
+                        Saisissez le nom d'une commune française pour obtenir ses prévisions météo
+                    </small>
+                </div>
+
+                <div class="form-group days-selector">
+                    <label for="daysSlider">
+                        📅 Nombre de jours de prévisions
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="daysSlider" class="slider" min="1" max="7" value="3"
+                            aria-describedby="daysDisplay">
+                        <div class="days-display" id="daysDisplay" aria-live="polite">
+                            3 jours
+                        </div>
+                    </div>
+                </div>
+
+                <fieldset class="form-group">
+                    <legend>📊 Informations supplémentaires</legend>
+                    <div class="options-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showLatitude" value="latitude">
+                            <span>🗺️ Latitude</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showLongitude" value="longitude">
+                            <span>🧭 Longitude</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showRain" value="rain">
+                            <span>🌧️ Cumul de pluie (mm)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showWind" value="wind">
+                            <span>💨 Vent moyen (km/h)</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="showWindDirection" value="windDirection">
+                            <span>🧭 Direction du vent (°)</span>
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="btn-group">
+                    <button type="submit" class="btn-primary">
+                        🔍 Rechercher
+                    </button>
+                    <button type="button" class="btn-secondary" id="geolocateBtn">
+                        📍 Ma position
+                    </button>
+                </div>
+            </form>
+
+            <div class="error-message" id="errorMessage" role="alert"></div>
+
+            <div class="loading" id="loadingIndicator" style="display: none;" aria-live="polite">
+                <div class="spinner"></div>
+                <p>Chargement des données météo...</p>
+            </div>
+
+            <section class="weather-results" id="weatherResults" aria-live="polite">
+                <!-- Les résultats météo seront affichés ici -->
+            </section>
+        </main>
+    </div>
 </body>
+
 </html>
