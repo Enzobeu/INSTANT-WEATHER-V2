@@ -239,7 +239,7 @@ button:hover {
     box-shadow: var(--shadow);
 }
 
-/* Résultats météo */
+/* weather-results */
 .weather-results {
     margin-top: 2rem;
 }
