@@ -1,11 +1,63 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="fr">
+
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Instant Weather V2</title>
+    <link rel="stylesheet" href="<https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css>">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
 </head>
+
 <body>
-    
+
+    <h1>🌤️ Instant Weather</h1>
+    <button id="toggle-dark-mode">🌙 Mode Sombre</button>
+    <form id="weather-form">
+        <label for="postal-code">🏙️ Code Postal :</label>
+        <input type="text" id="postal-code" name="postal-code" required placeholder="Ex : 75001">
+        <label for="days-slider">📅 Nombre de jours :</label>
+        <input type="range" id="days-slider" name="days" min="1" max="7" value="1"
+            oninput="updateDaysLabel(this.value)">
+        <span id="days-label">1 jour</span>
+        <div class="checkbox-container">
+            <div class="checkbox-item">
+                <input type="checkbox" id="latitude" name="latitude">
+                <label for="latitude">🗺️ Latitude décimale</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="longitude" name="longitude">
+                <label for="longitude">🧭 Longitude décimale</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="rainfall" name="rainfall">
+                <label for="rainfall">🌧️ Cumul de pluie (mm)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="wind-speed" name="wind-speed">
+                <label for="wind-speed">💨 Vent moyen (km/h)</label>
+            </div>
+            <div class="checkbox-item">
+                <input type="checkbox" id="wind-direction" name="wind-direction">
+                <label for="wind-direction">🧭 Direction du vent (°)</label>
+            </div>
+        </div>
+        <button type="submit">🔍 Rechercher</button>
+    </form>
+    <div id="commune-selection"></div>
+    <div class="main-container">
+        <div id="map-container">
+            <div class="map-title">📍 Localisation</div>
+            <div id="map"></div>
+        </div>
+        <div id="weather-container"></div>
+    </div>
+    <script src="<https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>>
+    <script src="./script.js"></script>
 </body>
+
 </html>
