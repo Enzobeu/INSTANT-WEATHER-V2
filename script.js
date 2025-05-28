@@ -25,3 +25,20 @@ function updateMap(lat, lon, communeName) {
         currentMarker.bindPopup(`<b>${communeName}</b><br>Lat: ${lat.toFixed(4)}<br>Lon: ${lon.toFixed(4)}`).openPopup();
     }
 }
+
+// Fonction pour obtenir l'icône météo et le statut
+function getWeatherIcon(data) {
+    const rain = data.probarain;
+    const sunHours = data.sun_hours;
+
+    if (rain > 70) {
+        return { icon: '🌧️', status: 'PLUVIEUX' };
+    } else if (rain > 40) {
+        return { icon: '⛅', status: 'NUAGEUX' };
+    } else if (sunHours > 6) {
+        return { icon: '☀️', status: 'ENSOLEILLÉ' };
+    } else {
+        return { icon: '☁️', status: 'COUVERT' };
+    }
+}
+
