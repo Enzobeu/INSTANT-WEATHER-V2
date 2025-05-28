@@ -1,0 +1,11 @@
+/* Importer une police de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;700&display=swap');
+
+body {
+    font-family: 'SF Pro Display', sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+    color: #333;
+    transition: background-color 0.3s, color 0.3s;
+}
