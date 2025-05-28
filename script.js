@@ -203,3 +203,21 @@ function displayWeather(forecasts, communeName) {
     });
     weatherContainer.appendChild(newSearchBtn);
 }
+
+// Gestion du mode sombre
+document.getElementById('toggle-dark-mode').addEventListener('click', function () {
+    document.body.classList.toggle('dark-mode');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    this.textContent = isDarkMode ? '☀️ Mode Clair' : '🌙 Mode Sombre';
+});
+
+// Mettre à jour le label des jours
+function updateDaysLabel(value) {
+    const daysLabel = document.getElementById('days-label');
+    daysLabel.textContent = value + (value > 1 ? ' jours' : ' jour');
+}
+
+// Initialiser la carte au chargement de la page
+document.addEventListener('DOMContentLoaded', function () {
+    initMap();
+});
