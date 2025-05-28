@@ -5,7 +5,7 @@ body {
     font-family: 'SF Pro Display', sans-serif;
     margin: 0;
     padding: 20px;
-    background: linear-gradient(135deg, #a2d1ff 0%, #0984e3 100%);
+    background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
     color: #333;
     transition: background-color 0.3s, color 0.3s;
 }
@@ -72,7 +72,7 @@ input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     /* Propriété standard pour la compatibilité */
-    width: 50%;
+    width: 80%;
     /* Réduire la largeur du slider */
     margin: 10px 0;
     background: transparent;
@@ -462,3 +462,33 @@ body.dark-mode .new-search-btn:hover {
     background-color: #0066cc;
 }
 
+/* Dégradés pour différents types de météo */
+.sunny-gradient {
+    background: linear-gradient(135deg, #f9d423, #ff4e50);
+    /* Ensoleillé */
+}
+
+.cloudy-gradient {
+    background: linear-gradient(135deg, #bdc3c7, #2c3e50);
+    /* Nuageux */
+}
+
+.rainy-gradient {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    /* Pluvieux */
+}
+
+body.dark-mode .sunny-gradient {
+    background: linear-gradient(135deg, #f39c12, #e74c3c);
+    /* Ensoleillé (sombre) */
+}
+
+body.dark-mode .cloudy-gradient {
+    background: linear-gradient(135deg, #95a5a6, #34495e);
+    /* Nuageux (sombre) */
+}
+
+body.dark-mode .rainy-gradient {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    /* Pluvieux (sombre) */
+}
