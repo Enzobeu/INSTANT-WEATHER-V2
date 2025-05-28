@@ -214,3 +214,39 @@ body.dark-mode #commune-selection button:hover {
     margin: 0 auto;
 }
 
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .weather-card-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .weather-icon-section {
+        flex: none;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .temp-section {
+        justify-content: center;
+        gap: 20px;
+    }
+
+    .weather-info-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 2px;
+    }
+
+    .weather-info-item span:last-child {
+        text-align: center;
+    }
+
+    #map {
+        height: 300px;
+    }
+}
+
