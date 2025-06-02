@@ -226,8 +226,26 @@ body.dark-mode #commune-selection button:hover {
 
     .weather-icon-section {
         flex: none;
+        width: auto;
+        max-width: 200px;
+        margin: 0 auto 15px auto;
+        padding: 10px 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .weather-status {
+        font-size: 0.9em;
+        word-wrap: break-word;
+        text-align: center;
         width: 100%;
-        margin-bottom: 15px;
+    }
+
+    .weather-details {
+        text-align: center;
+        width: 100%;
     }
 
     .temp-section {
@@ -236,13 +254,14 @@ body.dark-mode #commune-selection button:hover {
     }
 
     .weather-info-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 2px;
+        flex-direction: row;
+        text-align: left;
+        justify-content: space-between;
+        gap: 10px;
     }
 
     .weather-info-item span:last-child {
-        text-align: center;
+        text-align: right;
     }
 
     #map {
