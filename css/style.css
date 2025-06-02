@@ -72,7 +72,7 @@ input[type="range"] {
     -webkit-appearance: none;
     appearance: none;
     /* Propriété standard pour la compatibilité */
-    width: 80%;
+    width: 50%;
     /* Réduire la largeur du slider */
     margin: 10px 0;
     background: transparent;
@@ -141,21 +141,148 @@ days-label {
     margin-left: 10px;
 }
 
+/* Effet Glassmorphism pour les cases à cocher */
 .checkbox-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 10px 0;
+    gap: 15px;
+    margin: 20px 0;
     text-align: left;
 }
 
 .checkbox-item {
     display: flex;
     align-items: center;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
+/* Effet hover pour les éléments glassmorphism */
+.checkbox-item:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Mode sombre pour glassmorphism */
+body.dark-mode .checkbox-item {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .checkbox-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Style personnalisé pour les checkboxes */
 .checkbox-item input[type="checkbox"] {
-    margin-right: 8px;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+/* État coché de la checkbox */
+.checkbox-item input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #007aff, #5ac8fa);
+    border-color: #007aff;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+}
+
+/* Icône de validation */
+.checkbox-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Mode sombre pour les checkboxes */
+body.dark-mode .checkbox-item input[type="checkbox"] {
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .checkbox-item input[type="checkbox"]:checked {
+    background: linear-gradient(135deg, #0a84ff, #64d2ff);
+    border-color: #0a84ff;
+    box-shadow: 0 4px 15px rgba(10, 132, 255, 0.4);
+}
+
+/* Labels avec effet glassmorphism */
+.checkbox-item label {
+    cursor: pointer;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.9);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    user-select: none;
+    flex: 1;
+    transition: color 0.3s ease;
+}
+
+body.dark-mode .checkbox-item label {
+    color: rgba(255, 255, 255, 0.85);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* Effet de brillance au survol */
+.checkbox-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.checkbox-item:hover::before {
+    left: 100%;
+}
+
+/* Animation d'activation de la checkbox */
+.checkbox-item input[type="checkbox"]:checked {
+    animation: checkboxPulse 0.3s ease;
+}
+
+@keyframes checkboxPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 form button {
@@ -266,6 +393,26 @@ body.dark-mode #commune-selection button:hover {
 
     #map {
         height: 300px;
+    }
+
+    /* Responsive pour mobile - glassmorphism */
+    .checkbox-container {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .checkbox-item {
+        padding: 12px 16px;
+    }
+    
+    .checkbox-item input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+    }
+    
+    .checkbox-item label {
+        font-size: 0.9em;
     }
 }
 
