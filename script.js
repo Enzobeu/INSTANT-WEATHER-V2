@@ -1,39 +1,39 @@
 let map;
 let currentMarker;
 
-// Initialiser la carte
+// Initialize the map
 function initMap() {
-    map = L.map('map').setView([46.603354, 1.888334], 6); // Centre de la France
+    map = L.map('map').setView([46.603354, 1.888334], 6); // Center of France
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 }
 
-// Mettre à jour la carte avec une nouvelle position
-function updateMap(lat, lon, communeName) {
+// Update the map with a new position
+function updateMap(lat, lon, cityName) {
     if (map) {
         map.setView([lat, lon], 12);
 
-        // Supprimer l'ancien marqueur s'il existe
+        // Remove the old marker if it exists
         if (currentMarker) {
             map.removeLayer(currentMarker);
         }
 
-        // Ajouter un nouveau marqueur
+        // Add a new marker
         currentMarker = L.marker([lat, lon]).addTo(map);
-        currentMarker.bindPopup(`<b>${communeName}</b><br>Lat: ${lat.toFixed(4)}<br>Lon: ${lon.toFixed(4)}`).openPopup();
+        currentMarker.bindPopup(`<b>${cityName}</b><br>Lat: ${lat.toFixed(4)}<br>Lon: ${lon.toFixed(4)}`).openPopup();
     }
 }
 
-// Fonction pour obtenir l'icône météo et le statut
+// Function to get weather icon and status
 function getWeatherIcon(data) {
-    const rain = data.probarain;
+    const rainProbability = data.probarain;
     const sunHours = data.sun_hours;
 
-    if (rain > 70) {
+    if (rainProbability > 70) {
         return { icon: '🌧️', status: 'PLUVIEUX' };
-    } else if (rain > 40) {
+    } else if (rainProbability > 40) {
         return { icon: '⛅', status: 'NUAGEUX' };
     } else if (sunHours > 6) {
         return { icon: '☀️', status: 'ENSOLEILLÉ' };
@@ -42,7 +42,7 @@ function getWeatherIcon(data) {
     }
 }
 
-// Gestion du formulaire
+// Form handling
 document.getElementById('weather-form').addEventListener('submit', function (event) {
     event.preventDefault();
     const postalCode = document.getElementById('postal-code').value;
@@ -52,63 +52,63 @@ document.getElementById('weather-form').addEventListener('submit', function (eve
         .then(response => response.json())
         .then(data => {
             if (data.length === 0) {
-                alert('Aucune commune trouvée pour ce code postal.');
+                alert('No city found for this postal code.');
                 return;
             }
-            displayCommunes(data, days);
+            displayCities(data, days);
         })
         .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors de la recherche des communes.');
+            console.error('Error:', error);
+            alert('Error while searching for cities.');
         });
 });
 
-function displayCommunes(communes, days) {
-    const communeSelection = document.getElementById('commune-selection');
-    communeSelection.innerHTML = '<h3>Sélectionnez une commune :</h3>';
+function displayCities(cities, days) {
+    const citySelection = document.getElementById('commune-selection');
+    citySelection.innerHTML = '<h3>Sélectionnez une commune:</h3>';
 
-    communes.forEach(commune => {
+    cities.forEach(city => {
         const button = document.createElement('button');
-        button.textContent = `${commune.nom} (${commune.codeDepartement})`;
-        button.addEventListener('click', () => getWeatherData(commune, days));
-        communeSelection.appendChild(button);
+        button.textContent = `${city.nom} (${city.codeDepartement})`;
+        button.addEventListener('click', () => getWeatherData(city, days));
+        citySelection.appendChild(button);
     });
 }
 
-function getWeatherData(commune, days) {
-    // Initialiser la carte si ce n'est pas déjà fait
+function getWeatherData(city, days) {
+    // Initialize the map if not already done
     if (!map) {
         initMap();
     }
 
-    fetch(`https://api.meteo-concept.com/api/forecast/daily?token=b74e672bf62232c203ec7c099904a9be6774f20dc2a10dedd7640b5961342570&insee=${commune.code}`)
+    fetch(`https://api.meteo-concept.com/api/forecast/daily?token=b74e672bf62232c203ec7c099904a9be6774f20dc2a10dedd7640b5961342570&insee=${city.code}`)
         .then(response => response.json())
         .then(data => {
-            displayWeather(data.forecast.slice(0, days), commune.nom);
+            displayWeather(data.forecast.slice(0, days), city.nom);
 
-            // Mettre à jour la carte avec les coordonnées de la commune
+            // Update the map with city coordinates
             if (data.forecast.length > 0) {
                 const forecast = data.forecast[0];
-                updateMap(forecast.latitude, forecast.longitude, commune.nom);
+                updateMap(forecast.latitude, forecast.longitude, city.nom);
             }
 
-            // Masquer la sélection des communes
+            // Hide city selection
             document.getElementById('commune-selection').style.display = 'none';
         })
         .catch(error => {
-            console.error('Erreur:', error);
-            alert('Erreur lors de la récupération des données météo.');
+            console.error('Error:', error);
+            alert('Error while retrieving weather data.');
         });
 }
 
-function displayWeather(forecasts, communeName) {
+function displayWeather(forecasts, cityName) {
     const weatherContainer = document.getElementById('weather-container');
-    weatherContainer.innerHTML = `<h2>📊 Prévisions pour ${communeName}</h2>`;
+    weatherContainer.innerHTML = `<h2>📊 Prévisions pour ${cityName}</h2>`;
 
     forecasts.forEach((data, index) => {
         const date = new Date();
         date.setDate(date.getDate() + index);
-        const dateStr = date.toLocaleDateString('fr-FR', {
+        const dateString = date.toLocaleDateString('fr-FR', {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
@@ -117,7 +117,7 @@ function displayWeather(forecasts, communeName) {
 
         const weatherInfo = getWeatherIcon(data);
 
-        // Déterminer la classe de dégradé en fonction de la météo
+        // Determine gradient class based on weather
         let gradientClass = '';
         if (weatherInfo.status === 'ENSOLEILLÉ') {
             gradientClass = 'sunny-gradient';
@@ -127,7 +127,7 @@ function displayWeather(forecasts, communeName) {
             gradientClass = 'rainy-gradient';
         }
 
-        // Créer la carte météo
+        // Create weather card
         const weatherCard = document.createElement('div');
         weatherCard.className = `weather-card ${gradientClass}`;
 
@@ -135,29 +135,29 @@ function displayWeather(forecasts, communeName) {
         let hasOptionalInfo = false;
 
         if (document.getElementById('latitude').checked) {
-            optionalInfoHTML += `<div class="weather-info-item"><span>Latitude :</span><span>${data.latitude}</span></div>`;
+            optionalInfoHTML += `<div class="weather-info-item"><span>Latitude:</span><span>${data.latitude}</span></div>`;
             hasOptionalInfo = true;
         }
         if (document.getElementById('longitude').checked) {
-            optionalInfoHTML += `<div class="weather-info-item"><span>Longitude :</span><span>${data.longitude}</span></div>`;
+            optionalInfoHTML += `<div class="weather-info-item"><span>Longitude:</span><span>${data.longitude}</span></div>`;
             hasOptionalInfo = true;
         }
         if (document.getElementById('rainfall').checked) {
-            optionalInfoHTML += `<div class="weather-info-item"><span>Cumul pluie :</span><span>${data.rr10} mm</span></div>`;
+            optionalInfoHTML += `<div class="weather-info-item"><span>Cumul pluie:</span><span>${data.rr10} mm</span></div>`;
             hasOptionalInfo = true;
         }
         if (document.getElementById('wind-speed').checked) {
-            optionalInfoHTML += `<div class="weather-info-item"><span>Vent moyen (10m) :</span><span>${data.wind10m || 'N/A'} km/h</span></div>`;
+            optionalInfoHTML += `<div class="weather-info-item"><span>Vent moyen (10m):</span><span>${data.wind10m || 'N/A'} km/h</span></div>`;
             hasOptionalInfo = true;
         }
         if (document.getElementById('wind-direction').checked) {
-            optionalInfoHTML += `<div class="weather-info-item"><span>Direction du vent :</span><span>${data.dirwind10m || 'N/A'}°</span></div>`;
+            optionalInfoHTML += `<div class="weather-info-item"><span>Direction du vent:</span><span>${data.dirwind10m || 'N/A'}°</span></div>`;
             hasOptionalInfo = true;
         }
 
         weatherCard.innerHTML = `
             <div class="weather-card-header">
-                ${communeName.toUpperCase()} - ${dateStr}
+                ${cityName.toUpperCase()} - ${dateString}
             </div>
             <div class="weather-card-content">
                 <div class="weather-icon-section">
@@ -166,16 +166,16 @@ function displayWeather(forecasts, communeName) {
                 </div>
                 <div class="weather-details">
                     <div class="temp-section">
-                        <div class="temp-min">T min : ${data.tmin}°C</div>
-                        <div class="temp-max">T max : ${data.tmax}°C</div>
+                        <div class="temp-min">T min: ${data.tmin}°C</div>
+                        <div class="temp-max">T max: ${data.tmax}°C</div>
                     </div>
                     <div class="weather-info-grid">
                         <div class="weather-info-item">
-                            <span>Ensoleillement :</span>
+                            <span>Ensoleillement:</span>
                             <span>${data.sun_hours} h</span>
                         </div>
                         <div class="weather-info-item">
-                            <span>Probabilité de pluie :</span>
+                            <span>Probabilité de pluie:</span>
                             <span>${data.probarain} %</span>
                         </div>
                     </div>
@@ -193,31 +193,31 @@ function displayWeather(forecasts, communeName) {
         weatherContainer.appendChild(weatherCard);
     });
 
-    // Ajouter un bouton pour faire une nouvelle recherche
-    const newSearchBtn = document.createElement('button');
-    newSearchBtn.textContent = '🔄 Nouvelle recherche';
-    newSearchBtn.className = 'new-search-btn';
-    newSearchBtn.addEventListener('click', () => {
+    // Add button for new search
+    const newSearchButton = document.createElement('button');
+    newSearchButton.textContent = '🔄 Nouvelle recherche';
+    newSearchButton.className = 'new-search-btn';
+    newSearchButton.addEventListener('click', () => {
         document.getElementById('commune-selection').style.display = 'block';
         weatherContainer.innerHTML = '';
     });
-    weatherContainer.appendChild(newSearchBtn);
+    weatherContainer.appendChild(newSearchButton);
 }
 
-// Gestion du mode sombre
+// Dark mode handling
 document.getElementById('toggle-dark-mode').addEventListener('click', function () {
     document.body.classList.toggle('dark-mode');
     const isDarkMode = document.body.classList.contains('dark-mode');
-    this.textContent = isDarkMode ? '☀️ Mode Clair' : '🌙 Mode Sombre';
+    this.textContent = isDarkMode ? '☀️ Light Mode' : '🌙 Dark Mode';
 });
 
-// Mettre à jour le label des jours
+// Update days label
 function updateDaysLabel(value) {
     const daysLabel = document.getElementById('days-label');
-    daysLabel.textContent = value + (value > 1 ? ' jours' : ' jour');
+    daysLabel.textContent = value + (value > 1 ? ' days' : ' day');
 }
 
-// Initialiser la carte au chargement de la page
+// Initialize map on page load
 document.addEventListener('DOMContentLoaded', function () {
     initMap();
 });
